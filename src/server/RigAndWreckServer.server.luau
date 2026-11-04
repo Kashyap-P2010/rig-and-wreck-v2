@@ -1,17 +1,13 @@
 --!strict
 
-local Workspace = game:GetService("Workspace")
+-- server init
 
-local propsFolder = Workspace:FindFirstChild("RigAndWreckProps")
+local ServerDispatcher = require(script.Parent.Network.ServerDispatcher)
 
-if not propsFolder then
+local WorldBoundaryCleaner = require(script.Parent.Core.WorldBoundaryCleaner)
 
-    propsFolder = Instance.new("Folder")
+ServerDispatcher.Start()
 
-    propsFolder.Name = "RigAndWreckProps"
+WorldBoundaryCleaner.Start()
 
-    propsFolder.Parent = Workspace
-
-end
-
-print("[Rig & Wreck] Server initialized.")
+print("[Rig & Wreck] Server initialized successfully.")
