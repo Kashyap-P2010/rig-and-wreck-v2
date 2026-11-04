@@ -8,6 +8,8 @@ local RemoteDefinitions = require(ReplicatedStorage.RigAndWreck.Network.RemoteDe
 
 local TargetDetector = require(script.Parent.TargetDetector)
 
+local GhostRenderer = require(script.Parent.Parent.Previews.GhostRenderer)
+
 local GrabTool = require(script.Parent.Parent.Tools.GrabTool)
 
 local ToolManager = {}
