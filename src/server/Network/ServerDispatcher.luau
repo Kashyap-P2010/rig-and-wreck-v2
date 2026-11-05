@@ -20,8 +20,9 @@ local ConstraintRegistry = require(script.Parent.Parent.Physics.ConstraintRegist
 
 local PropSpawner = require(script.Parent.Parent.Physics.PropSpawner)
 
-local ServerDispatcher = {}
+local MotorManager = require(script.Parent.Parent.Physics.MotorManager)
 
+local ServerDispatcher = {}
 
 function ServerDispatcher.Start()
 	local spawnPropEvent = RemoteDefinitions.GetEvent("SpawnProp")
@@ -472,6 +473,8 @@ function ServerDispatcher.Start()
 
 			local dir = data.Direction or 0
 
+			MotorManager.SetMotorDirection(id, dir)
+
 		elseif action == "SetThrusterActive" then
 
 			local id = data.Id
@@ -789,6 +792,7 @@ function ServerDispatcher.Start()
 	local function hookVehicleSeat(seat: VehicleSeat)
 
 		local function updateDrive()
+			MotorManager.DriveAssemblyFromSeat(seat)
 		end
 
 		seat:GetPropertyChangedSignal("ThrottleFloat"):Connect(updateDrive)
@@ -838,6 +842,5 @@ function ServerDispatcher.Start()
 	end)
 
 end
-
 
 return ServerDispatcher
