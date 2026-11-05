@@ -4,6 +4,8 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local SystemLimits = require(ReplicatedStorage.RigAndWreck.Config.SystemLimits)
 
+local ConstraintRegistry = require(script.Parent.Parent.Physics.ConstraintRegistry)
+
 local WorldBoundaryCleaner = {}
 
 local running = false

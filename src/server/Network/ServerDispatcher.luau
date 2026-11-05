@@ -16,9 +16,12 @@ local OwnershipManager = require(script.Parent.Parent.Core.OwnershipManager)
 
 local BudgetManager = require(script.Parent.Parent.Core.BudgetManager)
 
+local ConstraintRegistry = require(script.Parent.Parent.Physics.ConstraintRegistry)
+
 local PropSpawner = require(script.Parent.Parent.Physics.PropSpawner)
 
 local ServerDispatcher = {}
+
 
 function ServerDispatcher.Start()
 	local spawnPropEvent = RemoteDefinitions.GetEvent("SpawnProp")
@@ -165,6 +168,8 @@ function ServerDispatcher.Start()
 
 			end
 
+			local rec = ConstraintRegistry.RegisterWeld(player, partA, partB)
+
 			playSoundEvent:FireClient(player, "Weld", partA.Position)
 
 		elseif action == "Unweld" then
@@ -177,9 +182,13 @@ function ServerDispatcher.Start()
 
 				local count = 0
 
+				local connected = ConstraintRegistry.GetPartConstraints(part)
+
 				for _, rec in ipairs(connected) do
 
 					if rec.constraintType == "WeldConstraint" then
+
+						ConstraintRegistry.DestroyConstraint(rec.id)
 
 						count += 1
 
@@ -233,9 +242,13 @@ function ServerDispatcher.Start()
 
 			for _, part in ipairs(props) do
 
+				local connected = ConstraintRegistry.GetPartConstraints(part)
+
 				for _, rec in ipairs(connected) do
 
 					if rec.constraintType == "WeldConstraint" then
+
+						ConstraintRegistry.DestroyConstraint(rec.id)
 
 						count += 1
 
@@ -305,6 +318,8 @@ function ServerDispatcher.Start()
 
 			att1.Parent = partB
 
+			local rec = ConstraintRegistry.RegisterRope(player, partA, partB, att0, att1, length)
+
 			playSoundEvent:FireClient(player, "Weld", posA)
 
 		-- hinge
@@ -352,6 +367,8 @@ function ServerDispatcher.Start()
 			att1.Axis = partB.CFrame:VectorToObjectSpace(normA or Vector3.new(0, 1, 0))
 
 			att1.Parent = partB
+
+			local rec = ConstraintRegistry.RegisterHinge(player, partA, partB, att0, att1, data.LimitsEnabled or false, data.Lower or -90, data.Upper or 90)
 
 			playSoundEvent:FireClient(player, "Weld", posA)
 
@@ -405,6 +422,8 @@ function ServerDispatcher.Start()
 
 			local torque = data.Torque or 12000
 
+			local rec = ConstraintRegistry.RegisterMotor(player, partA, partB, att0, att1, speed, torque, "W", "S")
+
 			playSoundEvent:FireClient(player, "Weld", posA)
 
 		-- thruster
@@ -440,6 +459,8 @@ function ServerDispatcher.Start()
 			att0.Parent = partA
 
 			local force = data.Force or 14000
+
+			local rec = ConstraintRegistry.RegisterThruster(player, partA, att0, force, "Space")
 
 			playSoundEvent:FireClient(player, "Weld", posA)
 
@@ -531,6 +552,8 @@ function ServerDispatcher.Start()
 
 			local cid = part:GetAttribute("CreationId")
 
+			ConstraintRegistry.DestroyPart(part, player)
+
 			playSoundEvent:FireClient(player, "Delete", pos)
 
 		-- clear all props
@@ -540,6 +563,8 @@ function ServerDispatcher.Start()
 			local props = BudgetManager.GetPlayerProps(player)
 
 			for _, p in ipairs(props) do
+
+				ConstraintRegistry.DestroyPart(p, player)
 
 			end
 
@@ -795,6 +820,8 @@ function ServerDispatcher.Start()
 	Players.PlayerRemoving:Connect(function(player: Player)
 
 		BudgetManager.CleanupPlayer(player, function(part)
+
+			ConstraintRegistry.DestroyPart(part, player)
 
 		end)
 

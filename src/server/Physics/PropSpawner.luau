@@ -10,6 +10,8 @@ local OwnershipManager = require(script.Parent.Parent.Core.OwnershipManager)
 
 local BudgetManager = require(script.Parent.Parent.Core.BudgetManager)
 
+local ConstraintRegistry = require(script.Parent.ConstraintRegistry)
+
 local SystemTypes = require(ReplicatedStorage.RigAndWreck.Types.SystemTypes)
 
 type PropType = SystemTypes.PropType
@@ -17,6 +19,7 @@ type PropType = SystemTypes.PropType
 local PropSpawner = {}
 
 local propsFolder: Folder? = nil
+
 
 local function getPropsFolder(): Folder
 
@@ -210,6 +213,8 @@ function PropSpawner.SpawnProp(player: Player, propType: string, cframe: CFrame,
 			if relVel > 45 then
 
 				-- snap joints on hard hit
+
+				ConstraintRegistry.TriggerBreakableImpact(part, relVel)
 
 				playSoundRemote:FireAllClients("RopeSnap", part.Position)
 
