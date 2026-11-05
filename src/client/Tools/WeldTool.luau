@@ -6,7 +6,7 @@ local BaseTool = require(script.Parent.BaseTool)
 
 local RemoteDefinitions = require(ReplicatedStorage.RigAndWreck.Network.RemoteDefinitions)
 
-local SelectionHighlighter = { Clear = function() end, HighlightHover = function(...) end, HighlightSelected = function(...) end, UpdateInfo = function(...) end }
+local SelectionHighlighter = require(script.Parent.Parent.Previews.SelectionHighlighter)
 
 local TargetDetector = require(script.Parent.Parent.Core.TargetDetector)
 
