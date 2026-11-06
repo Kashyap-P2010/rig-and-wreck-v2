@@ -208,6 +208,18 @@ function PropSpawner.SpawnProp(player: Player, propType: string, cframe: CFrame,
 
 			-- emit sparks
 
+			-- explode tnt on hard hit
+
+			if isTnt and relVel > 18 then
+
+				local ExplosivesManager = require(script.Parent.ExplosivesManager)
+
+				ExplosivesManager.Detonate(part, player)
+
+				return
+
+			end
+
 			local playSoundRemote = RemoteDefinitions.GetEvent("PlaySoundEffect")
 
 			if relVel > 45 then
