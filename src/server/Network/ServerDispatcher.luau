@@ -24,7 +24,10 @@ local MotorManager = require(script.Parent.Parent.Physics.MotorManager)
 
 local ThrusterManager = require(script.Parent.Parent.Physics.ThrusterManager)
 
+local ExplosivesManager = require(script.Parent.Parent.Physics.ExplosivesManager)
+
 local ServerDispatcher = {}
+
 
 function ServerDispatcher.Start()
 	local spawnPropEvent = RemoteDefinitions.GetEvent("SpawnProp")
@@ -660,6 +663,8 @@ function ServerDispatcher.Start()
 			local part = data.Part
 
 			if part and part:IsA("BasePart") and part:GetAttribute("PropType") == "TNT" then
+
+				ExplosivesManager.Detonate(part, player)
 
 			end
 
