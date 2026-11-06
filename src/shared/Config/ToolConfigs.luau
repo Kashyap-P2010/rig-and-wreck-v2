@@ -32,6 +32,8 @@ ToolConfigs.Weld = {
 
 	HighlightColorB = Color3.fromRGB(80, 220, 100),
 
+	BreakForceThreshold = 85000,
+
 }
 
 ToolConfigs.Rope = {
