@@ -22,6 +22,8 @@ local PropSpawner = require(script.Parent.Parent.Physics.PropSpawner)
 
 local MotorManager = require(script.Parent.Parent.Physics.MotorManager)
 
+local ThrusterManager = require(script.Parent.Parent.Physics.ThrusterManager)
+
 local ServerDispatcher = {}
 
 function ServerDispatcher.Start()
@@ -481,6 +483,8 @@ function ServerDispatcher.Start()
 
 			local active = data.Active == true
 
+			ThrusterManager.SetThrusterActive(id, active)
+
 		-- transform prop
 
 		elseif action == "Transform" then
@@ -793,6 +797,7 @@ function ServerDispatcher.Start()
 
 		local function updateDrive()
 			MotorManager.DriveAssemblyFromSeat(seat)
+			ThrusterManager.DriveAssemblyFromSeat(seat)
 		end
 
 		seat:GetPropertyChangedSignal("ThrottleFloat"):Connect(updateDrive)
@@ -842,5 +847,6 @@ function ServerDispatcher.Start()
 	end)
 
 end
+
 
 return ServerDispatcher
