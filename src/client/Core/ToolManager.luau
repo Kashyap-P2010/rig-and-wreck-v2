@@ -16,6 +16,8 @@ local WeldTool = require(script.Parent.Parent.Tools.WeldTool)
 
 local RopeTool = require(script.Parent.Parent.Tools.RopeTool)
 
+local BalloonTool = require(script.Parent.Parent.Tools.BalloonTool)
+
 local HingeTool = require(script.Parent.Parent.Tools.HingeTool)
 
 local WheelMotorTool = require(script.Parent.Parent.Tools.WheelMotorTool)
@@ -42,6 +44,7 @@ function ToolManager.Init()
 	tools[1] = GrabTool.new()
 	tools[2] = WeldTool.new()
 	tools[3] = RopeTool.new()
+	tools[4] = BalloonTool.new()
 	tools[6] = HingeTool.new()
 	tools[7] = WheelMotorTool.new()
 	tools[8] = ThrusterTool.new()
@@ -75,7 +78,6 @@ function ToolManager.Init()
 
 end
 
-
 function ToolManager.SelectTool(index: number)
 
 	if isSpawnMode then
@@ -107,6 +109,7 @@ function ToolManager.SelectTool(index: number)
 
 end
 
+
 function ToolManager.EnterSpawnMode(propType: string, snap: number)
 
 	if activeToolIndex and tools[activeToolIndex] then
@@ -129,6 +132,7 @@ function ToolManager.EnterSpawnMode(propType: string, snap: number)
 
 end
 
+
 function ToolManager.TriggerAction()
 
 	if isSpawnMode then
@@ -149,6 +153,7 @@ function ToolManager.TriggerAction()
 
 end
 
+
 function ToolManager.TriggerSecondary()
 
 	if isSpawnMode then
@@ -167,6 +172,7 @@ function ToolManager.TriggerSecondary()
 
 end
 
+
 function ToolManager.TriggerRotate(axis: string?)
 
 	if isSpawnMode then
@@ -184,7 +190,6 @@ function ToolManager.TriggerRotate(axis: string?)
 
 end
 
-
 function ToolManager.TriggerFreeze()
 	local tool = activeToolIndex and tools[activeToolIndex]
 
@@ -193,6 +198,7 @@ function ToolManager.TriggerFreeze()
 	end
 
 end
+
 
 function ToolManager.AdjustDistance(delta: number)
 	local tool = activeToolIndex and tools[activeToolIndex]
@@ -203,10 +209,10 @@ function ToolManager.AdjustDistance(delta: number)
 
 end
 
-
 function ToolManager.GetActiveTool(): any
 
 	return activeToolIndex and tools[activeToolIndex]
 end
+
 
 return ToolManager
