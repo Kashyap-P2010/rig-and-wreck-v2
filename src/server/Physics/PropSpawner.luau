@@ -12,6 +12,8 @@ local BudgetManager = require(script.Parent.Parent.Core.BudgetManager)
 
 local ConstraintRegistry = require(script.Parent.ConstraintRegistry)
 
+local CollisionFX = require(ReplicatedStorage.RigAndWreck.Utilities.CollisionFX)
+
 local SystemTypes = require(ReplicatedStorage.RigAndWreck.Types.SystemTypes)
 
 type PropType = SystemTypes.PropType
@@ -19,7 +21,6 @@ type PropType = SystemTypes.PropType
 local PropSpawner = {}
 
 local propsFolder: Folder? = nil
-
 
 local function getPropsFolder(): Folder
 
@@ -207,6 +208,8 @@ function PropSpawner.SpawnProp(player: Player, propType: string, cframe: CFrame,
 			lastImpact = now
 
 			-- emit sparks
+
+			CollisionFX.EmitSparks(part.Position, (part.Position - other.Position).Unit)
 
 			-- explode tnt on hard hit
 
