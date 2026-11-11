@@ -24,10 +24,11 @@ local MotorManager = require(script.Parent.Parent.Physics.MotorManager)
 
 local ThrusterManager = require(script.Parent.Parent.Physics.ThrusterManager)
 
+local BalloonManager = require(script.Parent.Parent.Physics.BalloonManager)
+
 local ExplosivesManager = require(script.Parent.Parent.Physics.ExplosivesManager)
 
 local ServerDispatcher = {}
-
 
 function ServerDispatcher.Start()
 	local spawnPropEvent = RemoteDefinitions.GetEvent("SpawnProp")
@@ -590,6 +591,8 @@ function ServerDispatcher.Start()
 
 			if targetPart and hitPos and typeof(hitPos) == "Vector3" then
 
+				BalloonManager.CreateBalloon(player, targetPart, hitPos, data.LiftForce, data.Color)
+
 			end
 
 		elseif action == "PopBalloon" then
@@ -597,6 +600,8 @@ function ServerDispatcher.Start()
 			local balloonPart = data.BalloonPart
 
 			if balloonPart and balloonPart:IsA("BasePart") then
+
+				BalloonManager.PopBalloon(balloonPart, player)
 
 			end
 
@@ -797,6 +802,7 @@ function ServerDispatcher.Start()
 	end
 
 	-- vehicle seat throttle hooks
+
 
 	local function hookVehicleSeat(seat: VehicleSeat)
 
