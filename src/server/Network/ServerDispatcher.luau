@@ -24,9 +24,13 @@ local MotorManager = require(script.Parent.Parent.Physics.MotorManager)
 
 local ThrusterManager = require(script.Parent.Parent.Physics.ThrusterManager)
 
+local ZeroGravityManager = require(script.Parent.Parent.Physics.ZeroGravityManager)
+
 local BalloonManager = require(script.Parent.Parent.Physics.BalloonManager)
 
 local MagnetManager = require(script.Parent.Parent.Physics.MagnetManager)
+
+local SlowMotionManager = require(script.Parent.Parent.Physics.SlowMotionManager)
 
 local ExplosivesManager = require(script.Parent.Parent.Physics.ExplosivesManager)
 
@@ -723,9 +727,13 @@ function ServerDispatcher.Start()
 
 		elseif data.Setting == "ZeroGravity" and type(data.Value) == "boolean" then
 
+			ZeroGravityManager.SetZeroGravity(data.Value)
+
 			updateSettingsEvent:FireAllClients({ Setting = "ZeroGravity", Value = data.Value })
 
 		elseif data.Setting == "SlowMotion" and type(data.Value) == "boolean" then
+
+			SlowMotionManager.SetSlowMotion(data.Value)
 
 		end
 
@@ -859,6 +867,10 @@ function ServerDispatcher.Start()
 	Players.PlayerAdded:Connect(function(player: Player)
 
 		BudgetManager.Sync(player)
+
+		updateSettingsEvent:FireClient(player, { Setting = "ZeroGravity", Value = ZeroGravityManager.IsZeroGravity() })
+
+		updateSettingsEvent:FireClient(player, { Setting = "SlowMotion", Value = SlowMotionManager.IsSlowMotion() })
 
 	end)
 
