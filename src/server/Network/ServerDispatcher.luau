@@ -26,6 +26,8 @@ local ThrusterManager = require(script.Parent.Parent.Physics.ThrusterManager)
 
 local BalloonManager = require(script.Parent.Parent.Physics.BalloonManager)
 
+local MagnetManager = require(script.Parent.Parent.Physics.MagnetManager)
+
 local ExplosivesManager = require(script.Parent.Parent.Physics.ExplosivesManager)
 
 local ServerDispatcher = {}
@@ -617,6 +619,8 @@ function ServerDispatcher.Start()
 
 			if part and part:IsA("BasePart") then
 
+				MagnetManager.SetMagnet(player, part, polarity, strength)
+
 			end
 
 		elseif action == "RemoveMagnet" then
@@ -624,6 +628,8 @@ function ServerDispatcher.Start()
 			local part = data.Part
 
 			if part and part:IsA("BasePart") and OwnershipManager.CanModify(player, part) then
+
+				MagnetManager.RemoveMagnet(part)
 
 			end
 
@@ -802,7 +808,6 @@ function ServerDispatcher.Start()
 	end
 
 	-- vehicle seat throttle hooks
-
 
 	local function hookVehicleSeat(seat: VehicleSeat)
 
