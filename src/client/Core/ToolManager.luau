@@ -10,6 +10,10 @@ local TargetDetector = require(script.Parent.TargetDetector)
 
 local GhostRenderer = require(script.Parent.Parent.Previews.GhostRenderer)
 
+local ToolInspectorView = require(script.Parent.Parent.UI.ToolInspectorView)
+
+local HotbarView = require(script.Parent.Parent.UI.HotbarView)
+
 local GrabTool = require(script.Parent.Parent.Tools.GrabTool)
 
 local WeldTool = require(script.Parent.Parent.Tools.WeldTool)

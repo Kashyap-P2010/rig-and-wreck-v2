@@ -6,25 +6,74 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local localPlayer = Players.LocalPlayer
 
+local playerGui = localPlayer:WaitForChild("PlayerGui")
+
+local screenGui = playerGui:WaitForChild("RigAndWreckGui") :: ScreenGui
+
 local RemoteDefinitions = require(ReplicatedStorage.RigAndWreck.Network.RemoteDefinitions)
 
 local SoundAssets = require(ReplicatedStorage.RigAndWreck.Config.SoundAssets)
+
+-- client systems
 
 local ToolManager = require(script.Parent.Core.ToolManager)
 
 local InputManager = require(script.Parent.Core.InputManager)
 
+local HotbarView = require(script.Parent.UI.HotbarView)
+
+local ToolInspectorView = require(script.Parent.UI.ToolInspectorView)
+
+-- remotes
+
+local undoActionRemote = RemoteDefinitions.GetEvent("UndoAction")
+
+local updateSettingsRemote = RemoteDefinitions.GetEvent("UpdateSettings")
+
 local playSoundRemote = RemoteDefinitions.GetEvent("PlaySoundEffect")
+
+local saveBuildFunc = RemoteDefinitions.GetFunction("SaveBuild")
+
+local loadBuildFunc = RemoteDefinitions.GetFunction("LoadBuild")
+
+-- init ui
+
+ToolInspectorView.Init(screenGui)
+
+HotbarView.Init(
+
+	screenGui,
+
+	function(toolIndex)
+		ToolManager.SelectTool(toolIndex)
+	end,
+
+	function()
+	end,
+
+	function()
+		undoActionRemote:FireServer({ Redo = false })
+	end,
+
+	function()
+		undoActionRemote:FireServer({ Redo = true })
+	end
+
+)
 
 ToolManager.Init()
 
 InputManager.Init()
+
+-- sfx listener
 
 playSoundRemote.OnClientEvent:Connect(function(soundName: string, position: Vector3?)
 
 	SoundAssets.Play(soundName, position)
 
 end)
+
+-- collision sparks and sound
 
 local CollisionFX = require(ReplicatedStorage.RigAndWreck.Utilities.CollisionFX)
 

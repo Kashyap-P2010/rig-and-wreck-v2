@@ -12,7 +12,7 @@ local SelectionHighlighter = require(script.Parent.Parent.Previews.SelectionHigh
 
 local TargetDetector = require(script.Parent.Parent.Core.TargetDetector)
 
-local UIComponents = { ShowToast = function(...) end }
+local UIComponents = require(script.Parent.Parent.UI.UIComponents)
 
 type TargetData = TargetDetector.TargetData
 
